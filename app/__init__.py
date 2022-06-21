@@ -6,8 +6,9 @@
 @Desc   :
 """
 from flask import Flask
-
 from config import Config
 
 ata = Flask(__name__)
+
+
 ata.config.from_object(Config)
