@@ -5,6 +5,8 @@
 @Author :   SunZelong
 @Desc   :
 """
+from datetime import datetime
+
 from sqlalchemy import or_
 
 from app.middleware.Jwt import UserToken
@@ -39,3 +41,19 @@ class UserDao(object):
             UserDao.log.error(f"用户注册失败：{str(e)}")
             return str(e)
         return None
+    @staticmethod
+    def login(username,password):
+        try:
+            pwd = UserToken.add_salt(password)
+            # 查询用户名、密码匹配且没有被删除的用户
+            user = User.query.filter_by(username=username,password=pwd,deleted_at=None).first()
+            if user is None:
+                return None,"用户名或密码错误"
+
+            #更新用户的最后登陆时间
+            user.last_login_at = datetime.now()
+            db.session.commit()
+            return user,None
+        except Exception as e:
+            UserDao.log.error(f"用户{username}登陆失败：{str(e)}")
+            return None,str(e)
