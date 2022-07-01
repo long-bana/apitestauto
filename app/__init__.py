@@ -6,9 +6,11 @@
 @Desc   :
 """
 from flask import Flask
+from flask_cors import CORS
+
 from config import Config
 
 ata = Flask(__name__)
-
+CORS(ata,supports_credentials=True)
 
 ata.config.from_object(Config)

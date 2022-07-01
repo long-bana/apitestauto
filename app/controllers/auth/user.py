@@ -36,7 +36,7 @@ def register():
 @auth.route("/login", methods=['POST'])
 def login():
     data = request.get_json()
-    username = data.get("username")
+    username = data.get("userName")
     password = data.get("password")
     if not username or not password:
         return jsonify(dict(code=101, msg="用户名或密码不能为空"))
